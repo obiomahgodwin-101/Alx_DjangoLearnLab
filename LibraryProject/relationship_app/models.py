@@ -1,33 +1,29 @@
 from django.db import models
 
-# Author model
 class Author(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
 
-# Book model with ForeignKey to Author
 class Book(models.Model):
     title = models.CharField(max_length=200)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books')
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.title} by {self.author.name}"
+        return self.title
 
-# Library model with ManyToMany to Book
 class Library(models.Model):
-    name = models.CharField(max_length=200)
-    books = models.ManyToManyField(Book, related_name='libraries')
+    name = models.CharField(max_length=100)
+    books = models.ManyToManyField(Book)
 
     def __str__(self):
         return self.name
 
-# Librarian model with OneToOne to Library
 class Librarian(models.Model):
     name = models.CharField(max_length=100)
-    library = models.OneToOneField(Library, on_delete=models.CASCADE, related_name='librarian')
+    library = models.OneToOneField(Library, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.name} at {self.library.name}"
+        return self.name
 
