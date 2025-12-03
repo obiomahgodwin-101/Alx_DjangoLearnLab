@@ -1,32 +1,63 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import JsonResponse
-from django.contrib.auth.decorators import permission_required
-
-from .models import Author, Book
-
-
-@permission_required('relationship_app.view_author', raise_exception=True)
-def author_list(request):
-    authors = Author.objects.all()
-    data = {"authors": list(authors.values("id", "name", "age"))}
-    return JsonResponse(data)
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import permission_required, login_required
+from .models import Book, Author, Library
+from .forms import BookForm  # ensure this exists (ModelForm for Book)
 
 
-@permission_required('relationship_app.view_book', raise_exception=True)
-def book_list(request):
+# List books (unchanged)
+def list_books(request):
     books = Book.objects.all()
-    data = {"books": list(books.values("id", "title", "published_date", "author_id"))}
-    return JsonResponse(data)
+    return render(request, 'relationship_app/list_books.html', {'books': books})
 
 
-@permission_required('relationship_app.view_book', raise_exception=True)
-def book_detail(request, book_id):
-    book = get_object_or_404(Book, id=book_id)
-    data = {
-        "id": book.id,
-        "title": book.title,
-        "published_date": book.published_date,
-        "author": book.author.name,
-    }
-    return JsonResponse(data)
+# Library detail (unchanged)
+from django.views.generic.detail import DetailView
+class LibraryDetailView(DetailView):
+    model = Library
+    template_name = 'relationship_app/library_detail.html'
+    context_object_name = 'library'
+
+
+# -------------------------
+# Permission-protected CRUD
+# -------------------------
+
+# ADD book — requires relationship_app.can_add_book
+@login_required
+@permission_required('relationship_app.can_add_book', raise_exception=True)
+def add_book(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('list_books')
+    else:
+        form = BookForm()
+    return render(request, 'relationship_app/add_book.html', {'form': form})
+
+
+# EDIT book — requires relationship_app.can_change_book
+@login_required
+@permission_required('relationship_app.can_change_book', raise_exception=True)
+def edit_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    if request.method == 'POST':
+        form = BookForm(request.POST, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect('list_books')
+    else:
+        form = BookForm(instance=book)
+    return render(request, 'relationship_app/edit_book.html', {'form': form, 'book': book})
+
+
+# DELETE book — requires relationship_app.can_delete_book
+@login_required
+@permission_required('relationship_app.can_delete_book', raise_exception=True)
+def delete_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    if request.method == 'POST':
+        book.delete()
+        return redirect('list_books')
+    return render(request, 'relationship_app/delete_book.html', {'book': book})
 
