@@ -1,17 +1,18 @@
 from django.db import models
 
+# Author model
 class Author(models.Model):
-    name = models.CharField(max_length=100)
-    age = models.IntegerField()
+    name = models.CharField(max_length=255)
+    age = models.PositiveIntegerField(default=18)  # default ensures migrations pass
 
     def __str__(self):
         return self.name
 
-
+# Book model
 class Book(models.Model):
-    title = models.CharField(max_length=200)
-    description = models.TextField()
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books')
+    title = models.CharField(max_length=255)
+    description = models.TextField(default="Default description")
+    author = models.ForeignKey(Author, related_name='books', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
