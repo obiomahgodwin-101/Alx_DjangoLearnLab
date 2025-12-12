@@ -29,8 +29,8 @@ INSTALLED_APPS = [
     # Third-party apps
     'rest_framework',
 
-    # Local apps
-    'api',
+    # Local apps — updated path because api is now inside advanced_api_project
+    'advanced_api_project.api',
 ]
 
 
@@ -65,7 +65,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'advanced_api_project.wsgi.application'
 
 
-# Database — default SQLite (ALX checker expects this)
+# Database — default SQLite
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
