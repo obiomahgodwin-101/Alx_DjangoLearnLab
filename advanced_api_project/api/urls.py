@@ -2,7 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # Example endpoints for the API
     path('authors/', views.AuthorList.as_view(), name='author-list'),
     path('authors/<int:pk>/', views.AuthorDetail.as_view(), name='author-detail'),
     path('books/', views.BookList.as_view(), name='book-list'),
