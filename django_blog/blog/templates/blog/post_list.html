@@ -1,5 +1,15 @@
-{% for post in posts %}
-  <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
-  <p>{{ post.content|truncatewords:20 }}</p>
+{% extends "blog/base.html" %}
+
+{% block content %}
+<h1>All Posts</h1>
+{% for post in object_list %}
+    <div>
+        <h2><a href="{% url 'post-detail' post.pk %}">{{ post.title }}</a></h2>
+        <p>by {{ post.author }} | {{ post.published_date }}</p>
+        <p>{{ post.content|truncatechars:100 }}</p>
+    </div>
+{% empty %}
+    <p>No posts yet.</p>
 {% endfor %}
+{% endblock %}
 
