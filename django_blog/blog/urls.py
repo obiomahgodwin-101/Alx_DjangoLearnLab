@@ -7,11 +7,7 @@ urlpatterns = [
     path('post/new/', views.PostCreateView.as_view(), name='post-create'),
     path('post/<int:pk>/update/', views.PostUpdateView.as_view(), name='post-update'),
     path('post/<int:pk>/delete/', views.PostDeleteView.as_view(), name='post-delete'),
-    
-    # Comment URLs would go here (already implemented)
-
-    # Tag and Search URLs
-    path('search/', views.post_search, name='post-search'),
+    path('search/', views.search_posts, name='search-posts'),
     path('tags/<str:tag_name>/', views.posts_by_tag, name='posts-by-tag'),
 ]
 
