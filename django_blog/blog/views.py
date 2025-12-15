@@ -1,11 +1,12 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.db.models import Q
-from django.urls import reverse_lazy
 from .models import Post, Comment
 from .forms import PostForm, CommentForm
+from taggit.models import Tag
 
+# Post Views
 class PostListView(ListView):
     model = Post
     template_name = 'blog/post_list.html'
@@ -14,6 +15,7 @@ class PostListView(ListView):
 class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
+    context_object_name = 'post'
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
@@ -42,18 +44,16 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         post = self.get_object()
         return self.request.user == post.author
 
-def search_posts(request):
-    query = request.GET.get('q')
-    results = []
-    if query:
-        results = Post.objects.filter(
-            Q(title__icontains=query) |
-            Q(content__icontains=query) |
-            Q(tags__name__icontains=query)
-        ).distinct()
-    return render(request, 'blog/search_results.html', {'results': results, 'query': query})
+# Comment Views (simplified)
+# Add your Comment CRUD views here as needed
 
-def posts_by_tag(request, tag_name):
-    results = Post.objects.filter(tags__name__in=[tag_name])
-    return render(request, 'blog/tag_posts.html', {'results': results, 'tag_name': tag_name})
+# Tag View
+class PostByTagListView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        tag_slug = self.kwargs.get('tag_slug')
+        return Post.objects.filter(tags__slug=tag_slug)
 
