@@ -1,23 +1,19 @@
-from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 from django.db import models
 
-
-class User(AbstractUser):
-    bio = models.TextField(blank=True)
-    profile_picture = models.ImageField(
-        upload_to='profile_pictures/',
-        blank=True,
-        null=True
+class UserProfile(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='profile'
     )
-
-    # Users this user follows
     following = models.ManyToManyField(
-        'self',
+        settings.AUTH_USER_MODEL,
         symmetrical=False,
         related_name='followers',
         blank=True
     )
 
     def __str__(self):
-        return self.username
+        return self.user.username
 
