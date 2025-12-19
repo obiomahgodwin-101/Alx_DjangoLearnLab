@@ -1,42 +1,13 @@
-from rest_framework import viewsets, permissions
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from django.contrib.auth.models import User
+from rest_framework import generics, permissions
+from .models import Post
+from .serializers import PostSerializer
 
-from .models import Post, Comment
-from .serializers import PostSerializer, CommentSerializer
-from accounts.models import UserProfile
-
-
-class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all().order_by('-created_at')
+class FeedView(generics.ListAPIView):
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
-
-
-class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all().order_by('-created_at')
-    serializer_class = CommentSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
-
-
-class FeedView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request):
-        profile, _ = UserProfile.objects.get_or_create(user=request.user)
-        following_users = profile.following.all()
-
-        posts = Post.objects.filter(
-            author__in=following_users
-        ).order_by('-created_at')
-
-        serializer = PostSerializer(posts, many=True)
-        return Response(serializer.data)
+    def get_queryset(self):
+        user = self.request.user
+        following_users = user.following.all()
+        return Post.objects.filter(author__in=following_users).order_by('-created_at')
 
