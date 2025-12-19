@@ -1,14 +1,21 @@
-from django.conf import settings
 from django.db import models
+from django.contrib.auth.models import User
+
 
 class UserProfile(models.Model):
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
+        User,
         on_delete=models.CASCADE,
         related_name='profile'
     )
+    bio = models.TextField(blank=True)
+    profile_picture = models.ImageField(
+        upload_to='profiles/',
+        blank=True,
+        null=True
+    )
     following = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
+        'self',
         symmetrical=False,
         related_name='followers',
         blank=True
