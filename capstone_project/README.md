@@ -1,26 +1,26 @@
-# Capstone Project: [Your Project Name]
-
+# Capstone Project: [README.md] 
+Developer: Godwin Obiomah
 ## Project Overview
-A brief description of your project:
+A brief description of my project:
 - What it does
 - Why it’s useful
 - Who would use it
 
 ## Features
-List the main features of your project, for example:
+The main features of my project:
 - CRUD operations for books and authors
 - Search, filter, and order functionality
 - Authentication for certain actions
 
 ## Tech Stack
-What technologies you used:
+These are the technologies i used:
 - Backend: Django & Django REST Framework
 - Database: SQLite/PostgreSQL
 - Frontend: (if applicable)
 - Other tools: Miro/draw.io for ERD, Postman for testing
 
 ## Setup Instructions
-How to run your project locally:
+How i run my project locally:
 ```bash
 # Clone the repo
 git clone https://github.com/yourusername/Alx_DjangoLearnLab.git
