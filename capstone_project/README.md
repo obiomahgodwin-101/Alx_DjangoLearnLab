@@ -34,4 +34,13 @@ python3 manage.py migrate
 
 # Run the server
 python3 manage.py runserver
+## Features Implemented
+
+- User authentication
+- Posts creation and likes
+- Notification system
+- Real-time notification logic using Django signals
+- Mark notifications as read
+- Unread notification count
+- Protected API endpoints
 
