@@ -1,29 +1,39 @@
-# Capstone Project: [README.md] 
-Developer: Godwin Obiomah
-## Project Overview
-A brief description of my project:
-- What it does
-- Why it’s useful
-- Who would use it
+# Capstone Project: Social Media API
 
-## Features
-The main features of my project:
-- CRUD operations for books and authors
-- Search, filter, and order functionality
-- Authentication for certain actions
+Developer: Godwin Obiomah
+
+## Project Overview
+This project is a backend Social Media API built with Django and Django REST Framework.
+
+It allows users to create posts, like posts, and receive real-time notifications using Django signals.  
+The system is secured with authentication and permissions to ensure only authorized access.
+
+This project demonstrates clean backend architecture and production-ready API design.
+
+## Features Implemented
+
+- User authentication and authorization
+- Create, retrieve, and manage posts
+- Like and unlike posts
+- Notification system
+- Automatic notifications using Django signals
+- Mark notifications as read
+- Unread notification count
+- Protected API endpoints
 
 ## Tech Stack
-These are the technologies i used:
-- Backend: Django & Django REST Framework
-- Database: SQLite/PostgreSQL
-- Frontend: (if applicable)
-- Other tools: Miro/draw.io for ERD, Postman for testing
+
+- Backend: Django, Django REST Framework
+- Database: SQLite (development)
+- Tools: Git, GitHub, Postman
 
 ## Setup Instructions
-How i run my project locally:
+
+Run the project locally using the steps below:
+
 ```bash
-# Clone the repo
-git clone https://github.com/yourusername/Alx_DjangoLearnLab.git
+# Clone the repository
+git clone https://github.com/obiomahgodwin-101/Alx_DjangoLearnLab.git
 cd capstone_project
 
 # Install dependencies
@@ -34,13 +44,4 @@ python3 manage.py migrate
 
 # Run the server
 python3 manage.py runserver
-## Features Implemented
-
-- User authentication
-- Posts creation and likes
-- Notification system
-- Real-time notification logic using Django signals
-- Mark notifications as read
-- Unread notification count
-- Protected API endpoints
 
