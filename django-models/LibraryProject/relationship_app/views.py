@@ -8,7 +8,7 @@ def register_view(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # LOGIN after registration
+            login(request, user)
             return redirect("login")
         else:
             messages.error(request, "Registration failed. Please check your details.")
@@ -22,7 +22,7 @@ def login_view(request):
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
-            login(request, user)  # LOGIN
+            login(request, user)
             return redirect("login")
         else:
             messages.error(request, "Invalid username or password.")
@@ -33,5 +33,5 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return render(request, "relationship_app/logout.html")
+    return render(request, "re
 
